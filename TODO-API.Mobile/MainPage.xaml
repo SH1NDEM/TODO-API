@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TODO_API.Mobile.MainPage"
+             Title="TODO API">
+    <ContentPage.Content>
+        <ScrollView>
+            <VerticalStackLayout Spacing="16" Padding="20">
+                <Label Text="Подключение к TODO API" Style="{StaticResource Headline}" />
+
+                <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto">
+                    <Entry Grid.Column="0"
+                           Placeholder="Базовый URL, например http://10.0.2.2:5000"
+                           Text="{Binding BaseUrl}" />
+                    <Button Grid.Column="1"
+                            Text="Сохранить"
+                            Command="{Binding SaveBaseUrlCommand}" />
+                </Grid>
+                <Label Text="Для Android-эмулятора используйте 10.0.2.2 вместо localhost."
+                       FontSize="12"
+                       TextColor="{StaticResource Secondary}" />
+
+                <Label Text="Новая задача" Style="{StaticResource Subhead}" />
+                <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto">
+                    <Entry Grid.Column="0"
+                           Placeholder="Текст задачи"
+                           Text="{Binding NewTaskText}" />
+                    <Button Grid.Column="1"
+                            Text="Добавить"
+                            Command="{Binding AddTaskCommand}" />
+                </Grid>
+
+                <Grid ColumnDefinitions="Auto,Auto,Auto" RowDefinitions="Auto">
+                    <Button Grid.Column="0"
+                            Text="Обновить"
+                            Command="{Binding RefreshCommand}" />
+                    <Button Grid.Column="1"
+                            Text="Только активные"
+                            Command="{Binding LoadOpenCommand}" />
+                    <Button Grid.Column="2"
+                            Text="Только завершенные"
+                            Command="{Binding LoadClosedCommand}" />
+                </Grid>
+
+                <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+
+                <CollectionView ItemsSource="{Binding Tasks}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Padding="12" Margin="0,0,0,12" HasShadow="True">
+                                <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto">
+                                    <CheckBox Grid.Column="0"
+                                              IsChecked="{Binding IsClose}"
+                                              CheckedChanged="OnTaskCheckedChanged" />
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Text}"
+                                           VerticalTextAlignment="Center" />
+                                    <Button Grid.Column="2"
+                                            Text="Удалить"
+                                            CommandParameter="{Binding .}"
+                                            Clicked="OnDeleteClicked" />
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
